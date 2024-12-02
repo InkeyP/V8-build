@@ -1,0 +1,37 @@
+name: Build V8
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-v8:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Step 2: Install dependencies
+      - name: Install Required Tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3 python3-pip git build-essential curl ninja-build g++ clang nodejs
+
+      # Step 3: Clone and build
+      - name: Clone depot_tools
+        run: |
+          git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git $HOME/depot_tools
+          echo 'export PATH=$PATH:"$HOME/depot_tools"' >> $GITHUB_ENV
+          source $GITHUB_ENV
+          fetch v8
+          cd v8
+          gclient sync
+          tools/dev/v8gen.py x64.debug
+          ninja -C out.gn/x64.debug
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: v8-build-output
+          path: v8/out.gn/x64.debug
