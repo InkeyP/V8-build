@@ -46,7 +46,7 @@ jobs:
           echo 'export PATH=$PATH:"$HOME/depot_tools"' >> $GITHUB_ENV
           source $GITHUB_ENV
           ls
-          buildv8.sh $COMMIT $NAME $PATCH
+          ./buildv8.sh $COMMIT $NAME $PATCH
           
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v3
