@@ -2,10 +2,28 @@ name: Build V8
 
 on:
   workflow_dispatch:
+    inputs:
+      commit:
+        description: 'commit'
+        required: true
+        default: ''
+      name:
+        description: 'name'
+        required: true
+        default: ''
+      patch:
+        description: 'patch'
+        required: true
+        default: ''
 
 jobs:
   build-v8:
     runs-on: ubuntu-latest
+
+    env:
+      COMMIT: ${{ github.event.inputs.commit }}
+      NAME: ${{ github.event.inputs.name }}
+      PATCH: ${{ github.event.inputs.patch }}
 
     steps:
       - name: Checkout Repository
@@ -14,21 +32,22 @@ jobs:
       - name: Install Required Tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3 python3-pip git build-essential curl ninja-build g++ clang nodejs
+          sudo apt-get install -y python3 python3-pip git build-essential curl ninja-build g++ clang xz-utils zip pkg-config
 
-      - name: Clone depot_tools and build v8
+      - name: Clone depot_tools and Fetch V8
         run: |
-          git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git $HOME/depot_tools
-          echo 'export PATH=$PATH:"$HOME/depot_tools"' >> $GITHUB_ENV
+          git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git $GITHUB_WORKSPACE/depot_tools
+          echo 'export PATH=$PATH:"$GITHUB_WORKSPACE/depot_tools"' >> $GITHUB_ENV
           source $GITHUB_ENV
           fetch v8
-          cd v8
-          gclient sync
-          tools/dev/v8gen.py x64.debug
-          ninja -C out.gn/x64.debug
 
+      - name: Build V8
+        run: |
+          cd $GITHUB_WORKSPACE
+          buildv8.sh $COMMIT $NAME $GITHUB_WORKSPACE/$PATCH
+          
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: v8-build-output
-          path: v8/out.gn/x64.debug
+          path: v8/out
