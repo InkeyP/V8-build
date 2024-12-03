@@ -5,7 +5,7 @@ if [ -z $2 ];then
 else
         NAME=$2
 fi
-cd /v8
+cd v8
 git reset --hard $VER
 gclient sync -D
 if [ -z $3 ];then

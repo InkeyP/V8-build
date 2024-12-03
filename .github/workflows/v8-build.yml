@@ -29,9 +29,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: ls
-        run: ls
-
       - name: Install Required Tools
         run: |
           sudo apt-get update
@@ -48,8 +45,8 @@ jobs:
         run: |
           echo 'export PATH=$PATH:"$HOME/depot_tools"' >> $GITHUB_ENV
           source $GITHUB_ENV
-          cd $GITHUB_WORKSPACE
-          buildv8.sh $COMMIT $NAME $GITHUB_WORKSPACE/$PATCH
+          ls
+          buildv8.sh $COMMIT $NAME $PATCH
           
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v3
