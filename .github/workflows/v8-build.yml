@@ -5,15 +5,15 @@ on:
     inputs:
       commit:
         description: 'commit'
-        required: true
+        required: false
         default: ''
       name:
         description: 'name'
-        required: true
+        required: false
         default: ''
       patch:
         description: 'patch'
-        required: true
+        required: false
         default: ''
 
 jobs:
