@@ -47,7 +47,7 @@ jobs:
           ./v8-linux.sh $COMMIT $NAME $PATCH
 
       - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: v8-build-output
           path: v8/out
