@@ -12,16 +12,16 @@ echo "VERSION (commit): ${VERSION:-<default>}"
 echo "NAME: ${NAME:-<none>}"
 echo "PATCH: ${PATCH_SRC:-<none>}"
 
-sudo apt-get install -y \
-    pkg-config \
-    git \
-    subversion \
-    curl \
-    wget \
-    build-essential \
-    python3 \
-    xz-utils \
-    zip
+# sudo apt-get install -y \
+#     pkg-config \
+#     git \
+#     subversion \
+#     curl \
+#     wget \
+#     build-essential \
+#     python3 \
+#     xz-utils \
+#     zip
 
 git config --global user.name "V8 Linux Builder"
 git config --global user.email "v8.linux.builder@localhost"

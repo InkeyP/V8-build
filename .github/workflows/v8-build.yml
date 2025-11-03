@@ -34,15 +34,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y python3 python3-pip git build-essential curl ninja-build g++ clang xz-utils zip pkg-config
 
-      - name: Clone depot_tools
-        run: |
-          git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git $HOME/depot_tools
-
       - name: Build V8
         run: |
-          echo 'export PATH=$PATH:"$HOME/depot_tools"' >> $GITHUB_ENV
-          source $GITHUB_ENV
-          ls
           chmod +x ./v8-linux.sh
           ./v8-linux.sh $COMMIT $NAME $PATCH
 
