@@ -15,8 +15,9 @@ COPY ./flag.txt /
 COPY ./Python-3.12.4 ./Python-3.12.4
 
 WORKDIR /home/ctf/Python-3.12.4
+RUN chmod -R a+rX .
 RUN ./configure
-RUN make -j10 
+RUN make -j10
 RUN make clean && make install -j10
 
 RUN chown -R root:ctf /home/ctf && chmod -R 750 /home/ctf
