@@ -34,7 +34,7 @@ jobs:
           context: ./mstr
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/mstr:latest
-            ghcr.io/${{ github.repository_owner }}/mstr:${{ github.sha }}
+            ghcr.io/inkeyp/v8-build-mstr:latest
+            ghcr.io/inkeyp/v8-build-mstr:${{ github.sha }}
           labels: |
             org.opencontainers.image.source=${{ github.repository }}
