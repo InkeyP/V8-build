@@ -52,13 +52,7 @@ if [[ -n "${VERSION}" ]]; then
 else
     echo "[*] checkout latest from origin (main/master)"
     git fetch --all --tags --prune
-    if git ls-remote --exit-code --heads origin main >/dev/null 2>&1; then
-        git checkout -B main origin/main
-    elif git ls-remote --exit-code --heads origin master >/dev/null 2>&1; then
-        git checkout -B master origin/master
-    else
-        echo "Could not find origin/main or origin/master; staying on current branch"
-    fi
+    git checkout -B main origin/main
 fi
 
 if [[ -n "${PATCH_SRC}" ]]; then
@@ -78,7 +72,6 @@ if [[ -n "${PATCH_SRC}" ]]; then
 
     if [[ -n "${PATCH_FILE}" && -s "${PATCH_FILE}" ]]; then
         echo "Applying patch file: ${PATCH_FILE}"
-        # Try git apply first; fall back to patch if needed
         if ! git apply --index --reject --whitespace=fix "${PATCH_FILE}"; then
             echo "git apply failed, trying 'patch' utility"
             patch -p1 -t -N < "${PATCH_FILE}" || { echo "Patch failed"; exit 1; }
@@ -104,4 +97,4 @@ dcheck_always_on = false
 v8_enable_sandbox = true
 '
 ninja -C out.gn/x64.release -t clean
-ninja -j8 -C out.gn/x64.release d8
+ninja -j$(nproc-1) -C out.gn/x64.release d8

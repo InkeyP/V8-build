@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  pwn_challenge:
+    build: .
+    container_name: mstr
+    ports:
+      - "9999:9999"
+    restart: always
+
+    cap_add:
+      - SYS_PTRACE
+
+    pid: host
+
+    ulimits:
+      nproc: 512
+      nofile: 2048
